@@ -11,5 +11,5 @@ public class CharacterResponse {
     private String status;
     private String species;
     private String image;
-    List<String> episodes;
+    private List<String> episode;
 }
