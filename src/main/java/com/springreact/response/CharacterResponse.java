@@ -1,4 +1,4 @@
-package com.springreact;
+package com.springreact.response;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 

@@ -1,5 +1,7 @@
-package com.springreact;
+package com.springreact.client;
 
+import com.springreact.response.CharacterResponse;
+import com.springreact.response.LocationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -29,5 +31,18 @@ public class RickAndMortyClient {
                         error -> Mono.error(new RuntimeException("error on finding character. Check params"))
                 )
                 .bodyToMono(CharacterResponse.class);
-    };
+    }
+
+    public Mono<LocationResponse> findLocationById(String id){
+        log.info("Getting location info with id: [{}]", id);
+        return webClient
+                .get()
+                .uri("/location/" +id)
+                .accept(APPLICATION_JSON)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        error -> Mono.error(new RuntimeException("Error on finding location. Check Params")))
+                .bodyToMono(LocationResponse.class);
+    }
+
 }
