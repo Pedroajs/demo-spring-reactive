@@ -19,7 +19,7 @@ public class RickAndMortyController {
     RickAndMortyClient rickAndMortyClient;
 
     @GetMapping(value = "/character/{id}")
-    Mono<CharacterResponse> findById(@PathVariable String id){
+    Mono<CharacterResponse> findCharacterById(@PathVariable String id){
         return rickAndMortyClient.findCharacterById(id);
     }
 
