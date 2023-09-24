@@ -1,6 +1,7 @@
 package com.springreact.client;
 
 import com.springreact.response.CharacterResponse;
+import com.springreact.response.EpisodeResponse;
 import com.springreact.response.LocationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
@@ -45,4 +46,15 @@ public class RickAndMortyClient {
                 .bodyToMono(LocationResponse.class);
     }
 
+    public Mono<EpisodeResponse> findEpisodeById(String id){
+        log.info("Getting episode info with id: [{}]", id);
+        return webClient
+                .get()
+                .uri("/episode/"+id)
+                .accept(APPLICATION_JSON)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        error -> Mono.error(new RuntimeException("Error on finding episode. Check Params")))
+                .bodyToMono(EpisodeResponse.class);
+    }
 }
