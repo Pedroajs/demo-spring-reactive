@@ -22,14 +22,12 @@ public class RickAndMortyClient {
         log.info("Getting character with the id: [{}]",id );
         return webClient
                 .get()
-                .uri("character/" + id)
+                .uri("/character/" + id)
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         error -> Mono.error(new RuntimeException("error on finding character. Check params"))
                 )
                 .bodyToMono(CharacterResponse.class);
-
-
     };
 }
