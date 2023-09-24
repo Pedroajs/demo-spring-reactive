@@ -2,12 +2,14 @@ package com.springreact.client;
 
 import com.springreact.response.CharacterResponse;
 import com.springreact.response.EpisodeResponse;
+import com.springreact.response.ListOfEpisodeResponse;
 import com.springreact.response.LocationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -56,5 +58,17 @@ public class RickAndMortyClient {
                 .onStatus(HttpStatusCode::is4xxClientError,
                         error -> Mono.error(new RuntimeException("Error on finding episode. Check Params")))
                 .bodyToMono(EpisodeResponse.class);
+    }
+
+    public Flux<ListOfEpisodeResponse> findAllEpisodes(){
+        log.info("Getting all episodes");
+        return webClient
+                .get()
+                .uri("/episode")
+                .accept(APPLICATION_JSON)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        error -> Mono.error(new RuntimeException("Error on getting all episoes. Check Param")))
+                .bodyToFlux(ListOfEpisodeResponse.class);
     }
 }
